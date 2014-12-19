@@ -8,7 +8,7 @@ require 'terminal-notifier'
 # OSX specific -
 COMMANDS = [
 	'open -a VLC "%s"',                                                                                                             # playback using VLC
-	'echo "curl -O \"%s\"" | pbcopy',                                                                                               # copy CURL command to clipboard
+	'echo "%s" | pbcopy',                                                                                               # copy CURL command to clipboard
 	'terminal-notifier -title "Downloadcommand is in the clipboard" -message "Open a console and press CMD+V to download the file"' # notify the user
 ]
 
@@ -46,6 +46,7 @@ class VideoProxy < WEBrick::HTTPProxyServer
 			COMMANDS.each do |cmd|
 				f.puts cmd.gsub("%s", video_url).gsub("%r", referer)
 			end
+			f.puts "rm #{tmp_file}"
 		}
 		system("chmod +x #{tmp_file}")
 		host = URI(referer).host
